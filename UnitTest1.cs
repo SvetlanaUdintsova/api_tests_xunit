@@ -1,4 +1,9 @@
 using RestSharp;
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace TryingRestSharp;
 
@@ -40,7 +45,7 @@ public class UnitTest1
 
 
     [Fact]
-    //This method uses HttpClient via _httpClientRequest
+    //This method uses HttpClient via _httpClientRequest and deserializes dynamically
     public async Task GetCompactForecastForStavanger()
     {
         const double stavangerLatitude = 58.9701;
@@ -50,10 +55,26 @@ public class UnitTest1
 
         var url = $"compact?lat={stavangerLatitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&lon={stavangerLongitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
         var response = await WeatherClient.GetAsync(url);
-        response.EnsureSuccessStatusCode();
+        if (response.IsSuccessStatusCode == false)
+        {
+            var errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Request failed with status code {response.StatusCode}: {errorContent}");
 
-        var responseContent = await response.Content.ReadAsStringAsync();
-        Assert.NotNull(responseContent);
-        Assert.Contains("properties", responseContent);
+        }
+        else
+        {
+            var JsonDocument = await ParseContentToJson(response);
+        }
     }
+    private async Task<JsonDocument> ParseContentToJson(HttpResponseMessage response)
+    {
+        //Learning to work with unknown HttpClient response content
+        var responseContent = await response.Content.ReadAsStringAsync();
+
+        return JsonDocument.Parse(responseContent);
+
+
+
+    }
+
 }

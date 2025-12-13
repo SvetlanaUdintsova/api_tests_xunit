@@ -29,7 +29,7 @@ public class UnitTest1
     {
         var WeatherClient = _httpClientRequest.GetHttpClient();
 
-        var url = $"/locations";
+        var url = "locations";
         var response = await WeatherClient.GetAsync(url);
         response.EnsureSuccessStatusCode();
 
@@ -48,7 +48,7 @@ public class UnitTest1
 
         var WeatherClient = _httpClientRequest.GetHttpClient();
 
-        var url = $"/compact?lat={stavangerLatitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&lon={stavangerLongitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
+        var url = $"compact?lat={stavangerLatitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}&lon={stavangerLongitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
         var response = await WeatherClient.GetAsync(url);
         response.EnsureSuccessStatusCode();
 

@@ -22,7 +22,7 @@ public class HttpClientRequest
 
         services.AddHttpClient("WeatherApi", client =>
         {
-            client.BaseAddress = new Uri("https://api.met.no/weatherapi/locationforecast/2.0");
+            client.BaseAddress = new Uri("https://api.met.no/weatherapi/locationforecast/2.0/");
 
             // Set User-Agent header from configuration
             var contactEmail = configuration["AppSettings:ContactEmail"];

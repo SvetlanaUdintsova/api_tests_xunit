@@ -72,9 +72,5 @@ public class UnitTest1
         var responseContent = await response.Content.ReadAsStringAsync();
 
         return JsonDocument.Parse(responseContent);
-
-
-
     }
-
 }
